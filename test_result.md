@@ -107,39 +107,48 @@ user_problem_statement: "Butterfly identification mobile game app (Phase 1) with
 backend:
   - task: "Initialize 30 butterflies in database"
     implemented: true
-    working: "NA"
+    working: true
     file: "server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Created POST /api/init-butterflies endpoint with 30 realistic butterfly species (common + Latin names) and image URLs"
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: POST /api/init-butterflies successfully initializes exactly 30 butterflies. Handles duplicate initialization correctly. Database contains 30 unique butterfly records with proper structure."
   
   - task: "Get all butterflies endpoint"
     implemented: true
-    working: "NA"
+    working: true
     file: "server.py"
     stuck_count: 0
     priority: "medium"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Created GET /api/butterflies endpoint to retrieve all butterflies from database"
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: GET /api/butterflies returns exactly 30 butterflies with correct structure (id, commonName, latinName, imageUrl). All IDs are unique. Fixed id field serialization issue during testing."
   
   - task: "Get random quiz question endpoint"
     implemented: true
-    working: "NA"
+    working: true
     file: "server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Created GET /api/quiz/question endpoint that returns random butterfly with 5 shuffled options"
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: GET /api/quiz/question returns proper structure with correctAnswer and 5 options. Randomization working correctly (5 different butterflies in 5 calls). Correct answer is always included in options. All butterfly objects have required fields."
 
 frontend:
   - task: "Home screen with HM logo and Start button"
