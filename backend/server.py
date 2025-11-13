@@ -53,7 +53,7 @@ async def root():
 async def get_butterflies():
     """Get all butterflies"""
     butterflies = await db.butterflies.find().to_list(100)
-    return [Butterfly(**{**b, "_id": str(b["_id"])}) for b in butterflies]
+    return [Butterfly(**{**b, "id": str(b["_id"])}) for b in butterflies]
 
 @api_router.get("/quiz/question")
 async def get_quiz_question():
