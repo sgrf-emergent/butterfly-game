@@ -76,8 +76,8 @@ async def get_quiz_question():
     random.shuffle(all_options)
     
     # Convert to Butterfly models
-    correct = Butterfly(**{**correct_butterfly, "_id": str(correct_butterfly["_id"])})
-    options = [Butterfly(**{**b, "_id": str(b["_id"])}) for b in all_options]
+    correct = Butterfly(**{**correct_butterfly, "id": str(correct_butterfly["_id"])})
+    options = [Butterfly(**{**b, "id": str(b["_id"])}) for b in all_options]
     
     return {
         "correctAnswer": correct,
