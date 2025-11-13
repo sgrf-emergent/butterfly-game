@@ -109,7 +109,9 @@ const styles = StyleSheet.create({
     width: width * 0.4,
     height: 80,
     marginTop: 16,
-    backgroundColor: 'transparent',
+    backgroundColor: '#E8F5E9',
+    borderRadius: 12,
+    padding: 8,
   },
   logo: {
     width: '100%',
