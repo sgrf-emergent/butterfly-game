@@ -251,6 +251,7 @@ const styles = StyleSheet.create({
     width: width,
     height: height * 0.4,
     position: 'relative',
+    backgroundColor: '#fff',
   },
   butterflyImage: {
     width: '100%',
