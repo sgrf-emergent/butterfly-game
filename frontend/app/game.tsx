@@ -152,7 +152,8 @@ export default function GameScreen() {
           <Image
             source={{ uri: question.correctAnswer.imageUrl }}
             style={styles.butterflyImage}
-            resizeMode="cover"
+            contentFit="cover"
+            transition={300}
           />
           {!showOptions && (
             <View style={styles.overlay}>
