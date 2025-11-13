@@ -194,9 +194,7 @@ metadata:
   run_ui: false
 
 test_plan:
-  current_focus:
-    - "Initialize 30 butterflies in database"
-    - "Get random quiz question endpoint"
+  current_focus: []
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
@@ -204,3 +202,5 @@ test_plan:
 agent_communication:
   - agent: "main"
     message: "Initial implementation complete. All 3 backend endpoints implemented (init-butterflies, get butterflies, quiz question). All 3 frontend screens created (home, game, results). Ready for backend testing. Please test all backend endpoints with focus on quiz question randomization and proper data structure."
+  - agent: "testing"
+    message: "✅ BACKEND TESTING COMPLETE: All 3 backend endpoints tested and working correctly. Fixed critical id field serialization issue in Butterfly model during testing. Database initialization, butterfly retrieval, and quiz question generation all functioning properly with correct data structures and randomization. Backend is ready for frontend integration."
