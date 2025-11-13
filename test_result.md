@@ -165,15 +165,18 @@ frontend:
   
   - task: "Game screen with quiz flow"
     implemented: true
-    working: "NA"
+    working: false
     file: "app/game.tsx"
-    stuck_count: 0
+    stuck_count: 1
     priority: "high"
     needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Created game screen with: 5-sec image display, 10-sec timer, 5 multiple choice options, correct/wrong feedback, score tracking, 10 rounds"
+      - working: false
+        agent: "user"
+        comment: "User reported: Starting screen with HM logo and butterfly photo appears correct, but each question is missing butterfly images - images appear very dark/black and not loading properly in quiz questions"
   
   - task: "Results screen with final score"
     implemented: true
