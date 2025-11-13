@@ -59,7 +59,7 @@ export default function HomeScreen() {
               uri: 'https://customer-assets.emergentagent.com/job_4b17dfa0-2069-4af0-b587-cffef1721d1d/artifacts/w6x2g86q_HM%20logo.png',
             }}
             style={styles.logo}
-            resizeMode="contain"
+            contentFit="contain"
           />
         </View>
 
