@@ -34,6 +34,14 @@ class Butterfly(BaseModel):
 
     class Config:
         populate_by_name = True
+        allow_population_by_field_name = True
+        
+    def dict(self, **kwargs):
+        # Override dict method to ensure _id is serialized as id
+        d = super().dict(**kwargs)
+        if '_id' in d:
+            d['id'] = d.pop('_id')
+        return d
 
 class QuizQuestion(BaseModel):
     butterfly: Butterfly
