@@ -74,7 +74,7 @@ export default function HomeScreen() {
               uri: 'https://images.unsplash.com/photo-1560263816-d704d83cce0f?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1Nzd8MHwxfHNlYXJjaHwxfHxidXR0ZXJmbHl8ZW58MHx8fHwxNzYzMDMzNzUzfDA&ixlib=rb-4.1.0&q=85',
             }}
             style={styles.butterflyImage}
-            resizeMode="cover"
+            contentFit="cover"
           />
         </View>
 
