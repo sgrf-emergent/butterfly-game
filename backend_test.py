@@ -259,6 +259,244 @@ class BackendTester:
             self.test_results["overall"]["critical_issues"].append(f"quiz question error: {str(e)}")
             print(f"❌ Quiz question error: {e}")
             return False
+
+    def test_admin_get_butterflies(self):
+        """Test GET /api/admin/butterflies endpoint"""
+        print("\n🧪 Testing GET /api/admin/butterflies...")
+        
+        try:
+            response = requests.get(f"{self.base_url}/admin/butterflies", timeout=10)
+            
+            if response.status_code != 200:
+                self.test_results["admin_get_butterflies"]["details"] = f"HTTP {response.status_code}: {response.text}"
+                self.test_results["overall"]["critical_issues"].append("admin get butterflies endpoint failed")
+                print(f"❌ Admin get butterflies failed: {response.status_code}")
+                return False
+            
+            butterflies = response.json()
+            
+            # Verify it's a list
+            if not isinstance(butterflies, list):
+                self.test_results["admin_get_butterflies"]["details"] = "Response is not a list"
+                self.test_results["overall"]["critical_issues"].append("admin get butterflies returns invalid format")
+                print("❌ Response is not a list")
+                return False
+            
+            print(f"✅ Admin retrieved {len(butterflies)} butterflies")
+            
+            # Verify we have butterflies (should be 30 from initialization)
+            if len(butterflies) == 0:
+                self.test_results["overall"]["critical_issues"].append("No butterflies found in admin endpoint")
+                print("❌ No butterflies found")
+                return False
+            
+            # Verify butterfly structure
+            if butterflies:
+                butterfly = butterflies[0]
+                required_fields = ["id", "commonName", "latinName", "imageUrl", "difficulty"]
+                missing_fields = [field for field in required_fields if field not in butterfly]
+                
+                if missing_fields:
+                    self.test_results["admin_get_butterflies"]["details"] = f"Missing fields: {missing_fields}"
+                    self.test_results["overall"]["critical_issues"].append(f"Admin butterfly objects missing fields: {missing_fields}")
+                    print(f"❌ Missing required fields: {missing_fields}")
+                    return False
+                
+                print(f"✅ Admin butterfly structure valid. Sample: {butterfly['commonName']} ({butterfly['latinName']})")
+            
+            self.test_results["admin_get_butterflies"]["passed"] = True
+            self.test_results["admin_get_butterflies"]["details"] = f"Successfully retrieved {len(butterflies)} butterflies via admin endpoint"
+            return True
+            
+        except Exception as e:
+            self.test_results["admin_get_butterflies"]["details"] = f"Exception: {str(e)}"
+            self.test_results["overall"]["critical_issues"].append(f"admin get butterflies error: {str(e)}")
+            print(f"❌ Admin get butterflies error: {e}")
+            return False
+
+    def test_admin_create_butterfly(self):
+        """Test POST /api/admin/butterfly endpoint"""
+        print("\n🧪 Testing POST /api/admin/butterfly...")
+        
+        # Test data as specified in the review request
+        test_butterfly = {
+            "commonName": "Test Butterfly",
+            "latinName": "Testus butterflii", 
+            "imageUrl": "https://example.com/test.jpg",
+            "difficulty": 2
+        }
+        
+        try:
+            response = requests.post(
+                f"{self.base_url}/admin/butterfly",
+                json=test_butterfly,
+                headers={"Content-Type": "application/json"},
+                timeout=10
+            )
+            
+            if response.status_code != 200:
+                self.test_results["admin_create_butterfly"]["details"] = f"HTTP {response.status_code}: {response.text}"
+                self.test_results["overall"]["critical_issues"].append("admin create butterfly endpoint failed")
+                print(f"❌ Admin create butterfly failed: {response.status_code}")
+                return False
+            
+            created_butterfly = response.json()
+            
+            # Store the created butterfly ID for update/delete tests
+            self.created_butterfly_id = created_butterfly.get("id")
+            print(f"✅ Created butterfly with ID: {self.created_butterfly_id}")
+            
+            # Validate the created butterfly has all expected fields
+            required_fields = ['id', 'commonName', 'latinName', 'imageUrl', 'difficulty']
+            missing_fields = [field for field in required_fields if field not in created_butterfly]
+            
+            if missing_fields:
+                self.test_results["admin_create_butterfly"]["details"] = f"Missing fields in response: {missing_fields}"
+                self.test_results["overall"]["critical_issues"].append(f"Admin create response missing fields: {missing_fields}")
+                print(f"❌ Missing fields in response: {missing_fields}")
+                return False
+            
+            # Validate the data matches what we sent
+            for field in ['commonName', 'latinName', 'imageUrl', 'difficulty']:
+                if created_butterfly[field] != test_butterfly[field]:
+                    self.test_results["admin_create_butterfly"]["details"] = f"Data mismatch in {field}"
+                    self.test_results["overall"]["critical_issues"].append(f"Admin create data mismatch in {field}")
+                    print(f"❌ Data mismatch: {field} = {created_butterfly[field]}, expected {test_butterfly[field]}")
+                    return False
+            
+            print(f"✅ Data validation passed for created butterfly")
+            
+            self.test_results["admin_create_butterfly"]["passed"] = True
+            self.test_results["admin_create_butterfly"]["details"] = f"Successfully created butterfly: {created_butterfly['commonName']}"
+            return True
+            
+        except Exception as e:
+            self.test_results["admin_create_butterfly"]["details"] = f"Exception: {str(e)}"
+            self.test_results["overall"]["critical_issues"].append(f"admin create butterfly error: {str(e)}")
+            print(f"❌ Admin create butterfly error: {e}")
+            return False
+
+    def test_admin_update_butterfly(self):
+        """Test PUT /api/admin/butterfly/{id} endpoint"""
+        print(f"\n🧪 Testing PUT /api/admin/butterfly/{self.created_butterfly_id}...")
+        
+        if not self.created_butterfly_id:
+            self.test_results["admin_update_butterfly"]["details"] = "No butterfly ID available for update test"
+            self.test_results["overall"]["critical_issues"].append("Cannot test update - no butterfly ID")
+            print("❌ No butterfly ID available for update test")
+            return False
+        
+        # Updated test data
+        updated_butterfly = {
+            "commonName": "Updated Test Butterfly",
+            "latinName": "Testus butterflii updatus",
+            "imageUrl": "https://example.com/updated-test.jpg", 
+            "difficulty": 3
+        }
+        
+        try:
+            response = requests.put(
+                f"{self.base_url}/admin/butterfly/{self.created_butterfly_id}",
+                json=updated_butterfly,
+                headers={"Content-Type": "application/json"},
+                timeout=10
+            )
+            
+            if response.status_code != 200:
+                self.test_results["admin_update_butterfly"]["details"] = f"HTTP {response.status_code}: {response.text}"
+                if response.status_code == 404:
+                    self.test_results["overall"]["critical_issues"].append("admin update butterfly - butterfly not found")
+                    print("❌ Butterfly not found for update")
+                else:
+                    self.test_results["overall"]["critical_issues"].append("admin update butterfly endpoint failed")
+                    print(f"❌ Admin update butterfly failed: {response.status_code}")
+                return False
+            
+            updated_result = response.json()
+            print(f"✅ Updated butterfly with ID: {updated_result.get('id')}")
+            
+            # Validate the updated butterfly has all expected fields
+            required_fields = ['id', 'commonName', 'latinName', 'imageUrl', 'difficulty']
+            missing_fields = [field for field in required_fields if field not in updated_result]
+            
+            if missing_fields:
+                self.test_results["admin_update_butterfly"]["details"] = f"Missing fields in response: {missing_fields}"
+                self.test_results["overall"]["critical_issues"].append(f"Admin update response missing fields: {missing_fields}")
+                print(f"❌ Missing fields in response: {missing_fields}")
+                return False
+            
+            # Validate the data matches what we sent
+            for field in ['commonName', 'latinName', 'imageUrl', 'difficulty']:
+                if updated_result[field] != updated_butterfly[field]:
+                    self.test_results["admin_update_butterfly"]["details"] = f"Data mismatch in {field}"
+                    self.test_results["overall"]["critical_issues"].append(f"Admin update data mismatch in {field}")
+                    print(f"❌ Data mismatch: {field} = {updated_result[field]}, expected {updated_butterfly[field]}")
+                    return False
+            
+            print(f"✅ Update validation passed")
+            
+            self.test_results["admin_update_butterfly"]["passed"] = True
+            self.test_results["admin_update_butterfly"]["details"] = f"Successfully updated butterfly: {updated_result['commonName']}"
+            return True
+            
+        except Exception as e:
+            self.test_results["admin_update_butterfly"]["details"] = f"Exception: {str(e)}"
+            self.test_results["overall"]["critical_issues"].append(f"admin update butterfly error: {str(e)}")
+            print(f"❌ Admin update butterfly error: {e}")
+            return False
+
+    def test_admin_delete_butterfly(self):
+        """Test DELETE /api/admin/butterfly/{id} endpoint"""
+        print(f"\n🧪 Testing DELETE /api/admin/butterfly/{self.created_butterfly_id}...")
+        
+        if not self.created_butterfly_id:
+            self.test_results["admin_delete_butterfly"]["details"] = "No butterfly ID available for delete test"
+            self.test_results["overall"]["critical_issues"].append("Cannot test delete - no butterfly ID")
+            print("❌ No butterfly ID available for delete test")
+            return False
+        
+        try:
+            response = requests.delete(f"{self.base_url}/admin/butterfly/{self.created_butterfly_id}", timeout=10)
+            
+            if response.status_code != 200:
+                self.test_results["admin_delete_butterfly"]["details"] = f"HTTP {response.status_code}: {response.text}"
+                if response.status_code == 404:
+                    self.test_results["overall"]["critical_issues"].append("admin delete butterfly - butterfly not found")
+                    print("❌ Butterfly not found for deletion")
+                else:
+                    self.test_results["overall"]["critical_issues"].append("admin delete butterfly endpoint failed")
+                    print(f"❌ Admin delete butterfly failed: {response.status_code}")
+                return False
+            
+            result = response.json()
+            print(f"✅ Delete response: {result.get('message', 'Butterfly deleted')}")
+            
+            # Verify the butterfly was actually deleted by checking the list
+            print("🔍 Verifying butterfly was deleted...")
+            get_response = requests.get(f"{self.base_url}/admin/butterflies", timeout=10)
+            if get_response.status_code == 200:
+                butterflies = get_response.json()
+                deleted_butterfly = next((b for b in butterflies if b["id"] == self.created_butterfly_id), None)
+                
+                if deleted_butterfly is None:
+                    print(f"✅ Verified: Butterfly {self.created_butterfly_id} is no longer in the list")
+                else:
+                    self.test_results["admin_delete_butterfly"]["details"] = "Butterfly still exists after deletion"
+                    self.test_results["overall"]["critical_issues"].append("Admin delete - butterfly still exists after deletion")
+                    print(f"❌ Butterfly {self.created_butterfly_id} still exists after deletion")
+                    return False
+            else:
+                print("⚠️ Could not verify deletion - unable to retrieve butterfly list")
+            
+            self.test_results["admin_delete_butterfly"]["passed"] = True
+            self.test_results["admin_delete_butterfly"]["details"] = f"Successfully deleted butterfly and verified removal"
+            return True
+            
+        except Exception as e:
+            self.test_results["admin_delete_butterfly"]["details"] = f"Exception: {str(e)}"
+            self.test_results["overall"]["critical_issues"].append(f"admin delete butterfly error: {str(e)}")
+            print(f"❌ Admin delete butterfly error: {e}")
+            return False
     
     def run_all_tests(self):
         """Run all backend tests"""
