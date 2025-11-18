@@ -129,6 +129,57 @@ async def initialize_butterflies():
     result = await db.butterflies.insert_many(butterflies)
     return {"message": f"Successfully initialized {len(result.inserted_ids)} butterflies"}
 
+# ==================== ADMIN ENDPOINTS ====================
+
+@api_router.get("/admin/butterflies", response_model=List[Butterfly])
+async def get_admin_butterflies():
+    """Get all butterflies for admin management"""
+    butterflies = await db.butterflies.find().to_list(100)
+    return [Butterfly(**{**b, "id": str(b["_id"])}) for b in butterflies]
+
+@api_router.post("/admin/butterfly", response_model=Butterfly)
+async def create_butterfly(butterfly: Butterfly):
+    """Create a new butterfly"""
+    butterfly_dict = butterfly.model_dump(exclude={"id"})
+    result = await db.butterflies.insert_one(butterfly_dict)
+    new_butterfly = await db.butterflies.find_one({"_id": result.inserted_id})
+    return Butterfly(**{**new_butterfly, "id": str(new_butterfly["_id"])})
+
+@api_router.put("/admin/butterfly/{butterfly_id}", response_model=Butterfly)
+async def update_butterfly(butterfly_id: str, butterfly: Butterfly):
+    """Update an existing butterfly"""
+    try:
+        obj_id = ObjectId(butterfly_id)
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid butterfly ID")
+    
+    butterfly_dict = butterfly.model_dump(exclude={"id"})
+    result = await db.butterflies.update_one(
+        {"_id": obj_id},
+        {"$set": butterfly_dict}
+    )
+    
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Butterfly not found")
+    
+    updated_butterfly = await db.butterflies.find_one({"_id": obj_id})
+    return Butterfly(**{**updated_butterfly, "id": str(updated_butterfly["_id"])})
+
+@api_router.delete("/admin/butterfly/{butterfly_id}")
+async def delete_butterfly(butterfly_id: str):
+    """Delete a butterfly"""
+    try:
+        obj_id = ObjectId(butterfly_id)
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid butterfly ID")
+    
+    result = await db.butterflies.delete_one({"_id": obj_id})
+    
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Butterfly not found")
+    
+    return {"message": "Butterfly deleted successfully"}
+
 # Include the router in the main app
 app.include_router(api_router)
 
