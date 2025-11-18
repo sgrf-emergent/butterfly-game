@@ -1,0 +1,95 @@
+<analysis>
+The user's primary language is English. All future responses should be in English.
+
+The trajectory details the development of a butterfly identification mobile app from scratch. The initial phase involved setting up a full-stack application using Expo for the frontend and FastAPI for the backend. The AI engineer first clarified the product requirements, deciding to implement Phase 1 with pre-populated mock data for 30 butterflies and a light green theme, deferring admin features.
+
+The initial build included creating backend endpoints to serve butterfly data and a frontend with home, game, and results screens. However, a critical bug was reported by the user: images were not displaying correctly on the game screen. The debugging process was extensive. The engineer first verified the backend API and image URL accessibility, ruling out server-side issues. The  was correctly invoked, identifying a dark overlay in the CSS as the root cause. When removing the overlay didn't fully resolve the issue (images remained black), the engineer correctly pivoted to a more robust solution, replacing the standard React Native  component with . This successfully loaded the images, although they appeared blurred in the web preview, a known artifact.
+
+Finally, the user requested a UI tweak to the home screen logo. The engineer first attempted a direct style change, then correctly identified the issue as the image's embedded background and implemented a successful workaround by styling the logo's container to blend with the theme. The work concluded after verifying this final change.
+</analysis>
+
+<product_requirements>
+The goal is to build a butterfly identification game for iOS and Android.
+
+**Phase 1 (Completed):**
+A simple quiz game.
+- **Start Screen:** Displays the HM logo and a Start button.
+- **Game Flow:**
+    - A random butterfly photo is shown for 5 seconds.
+    - Five multiple-choice options (Common and Latin names) appear.
+    - The user has 10 seconds to answer.
+    - Instant feedback (Correct or Wrong) is provided. If wrong, the correct answer is shown.
+    - A Next button proceeds to the next question.
+- **Scoring:** The score (e.g., 1/10) is displayed at the top right.
+- **End Screen:** After 10 questions, a final score is shown with a Play Again option.
+
+**Implementation Details:**
+- **Data:** The app was built with pre-populated data for 30 realistic butterfly species.
+- **Theme:** A light green garden theme has been applied.
+- **Assets:** The provided HM logo is used on the home screen.
+- **Login:** No user login is required for Phase 1.
+
+**Phase 2 (Pending):**
+- **Admin Panel:** Features for uploading butterfly photos/videos, setting difficulty levels, and managing display times.
+- **User Features:** Usernames to save scores and the ability to select a difficulty level.
+</product_requirements>
+
+<key_technical_concepts>
+- **Frameworks:** Expo (React Native) for the cross-platform mobile app, FastAPI (Python) for the backend.
+- **Database:** MongoDB for data storage, pre-populated with butterfly data.
+- **Routing:** File-based routing using .
+- **Image Handling:** Switched from 's default  component to  to resolve web rendering and loading issues.
+- **Styling:**  for all component styling, with a focus on a cohesive light-green theme.
+- **Debugging:** Utilized a  to diagnose a visual bug related to an image overlay.
+</key_technical_concepts>
+
+<code_architecture>
+The application follows a standard full-stack monorepo structure with a  and  directory.
+
+
+
+- ****
+    - **Importance:** This file contains the FastAPI backend logic. It connects to MongoDB and defines the API endpoints that the frontend consumes.
+    - **Changes:** Created to serve two main endpoints:  to list all butterflies (for data seeding) and  to provide a single, randomly selected butterfly along with four incorrect options for the quiz. The backend was tested and confirmed to be working correctly.
+
+- ****
+    - **Importance:** This is the entry point and home screen of the app. It displays the logo, a butterfly image, and the Start button to begin the game.
+    - **Changes:**
+        - Created to be the initial landing page.
+        - The  component was updated from  to  for better performance and consistency.
+        - The styling for the HM logo container was modified multiple times. The final implementation styles the container with a light green background (), padding, and  to blend the logo (which has an embedded white background) into the app's theme.
+
+- ****
+    - **Importance:** This file contains the core game logic, including state management for the current question, score, timers, user selections, and feedback.
+    - **Changes:**
+        - A major debugging effort occurred here. An initial dark overlay () that was causing images to appear black was removed.
+        - To fix persistent image loading issues on the web, the standard  component was replaced with  from the  library. This resolved the problem of images not appearing.
+
+- ****
+    - **Importance:** This screen is displayed after the user completes 10 questions. It shows the final score and provides an option to restart the game.
+    - **Changes:** Created as part of the initial application build to complete the game loop. No major fixes were required for this file.
+</code_architecture>
+
+<pending_tasks>
+- **Phase 2 Implementation:**
+    - Build the Admin Panel for managing butterfly data (photos, videos, names, difficulty).
+    - Implement user accounts for saving scores.
+    - Add a difficulty selection feature for users.
+    - Enable voice recognition for selecting answers.
+</pending_tasks>
+
+<current_work>
+The most recently completed task was a user-requested UI adjustment on the home screen (). The user wanted to remove the white background from the HM logo to better match the app's light green garden theme.
+
+The initial investigation revealed that the white background was part of the logo image file itself, so simply changing the component's  style was ineffective.
+
+The implemented solution was to apply styling to the logo's parent  container. This container was given the same light green background color as the page (), along with  and . This change makes the square logo image appear more integrated and cohesive with the overall design, effectively removing the harsh white box effect.
+
+The code change in  was:
+
+This work has been completed and verified via a screenshot. The app is considered fully functional for Phase 1.
+</current_work>
+
+<optional_next_step>
+Now that Phase 1 is complete and the final UI tweak is done, I will ask you for the next steps. Are you happy with the current state, or shall we begin working on the Phase 2 features?
+</optional_next_step>
