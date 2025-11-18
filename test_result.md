@@ -149,6 +149,54 @@ backend:
       - working: true
         agent: "testing"
         comment: "✅ TESTED: GET /api/quiz/question returns proper structure with correctAnswer and 5 options. Randomization working correctly (5 different butterflies in 5 calls). Correct answer is always included in options. All butterfly objects have required fields."
+  
+  - task: "Admin - Get all butterflies"
+    implemented: true
+    working: "NA"
+    file: "server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Created GET /api/admin/butterflies endpoint to retrieve all butterflies for admin management"
+  
+  - task: "Admin - Create butterfly"
+    implemented: true
+    working: "NA"
+    file: "server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Created POST /api/admin/butterfly endpoint to add new butterfly to database"
+  
+  - task: "Admin - Update butterfly"
+    implemented: true
+    working: "NA"
+    file: "server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Created PUT /api/admin/butterfly/:id endpoint to update existing butterfly"
+  
+  - task: "Admin - Delete butterfly"
+    implemented: true
+    working: "NA"
+    file: "server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Created DELETE /api/admin/butterfly/:id endpoint to remove butterfly from database"
 
 frontend:
   - task: "Home screen with HM logo and Start button"
