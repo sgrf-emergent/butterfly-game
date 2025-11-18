@@ -152,51 +152,63 @@ backend:
   
   - task: "Admin - Get all butterflies"
     implemented: true
-    working: "NA"
+    working: true
     file: "server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Created GET /api/admin/butterflies endpoint to retrieve all butterflies for admin management"
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: GET /api/admin/butterflies successfully retrieves all 30 butterflies with correct structure (id, commonName, latinName, imageUrl, difficulty). Admin endpoint working correctly."
   
   - task: "Admin - Create butterfly"
     implemented: true
-    working: "NA"
+    working: true
     file: "server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Created POST /api/admin/butterfly endpoint to add new butterfly to database"
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: POST /api/admin/butterfly successfully creates new butterfly with test data (Test Butterfly, Testus butterflii). Returns created butterfly with proper ID and validates all field data matches input."
   
   - task: "Admin - Update butterfly"
     implemented: true
-    working: "NA"
+    working: true
     file: "server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Created PUT /api/admin/butterfly/:id endpoint to update existing butterfly"
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: PUT /api/admin/butterfly/{id} successfully updates existing butterfly. Tested with created butterfly ID, updated all fields (commonName, latinName, imageUrl, difficulty), and verified changes are persisted correctly."
   
   - task: "Admin - Delete butterfly"
     implemented: true
-    working: "NA"
+    working: true
     file: "server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Created DELETE /api/admin/butterfly/:id endpoint to remove butterfly from database"
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: DELETE /api/admin/butterfly/{id} successfully deletes butterfly and returns success message. Verified butterfly is completely removed from database by checking admin butterfly list."
 
 frontend:
   - task: "Home screen with HM logo and Start button"
