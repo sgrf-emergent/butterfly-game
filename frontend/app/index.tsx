@@ -182,6 +182,20 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: -8,
   },
+  adminButton: {
+    backgroundColor: 'transparent',
+    borderWidth: 2,
+    borderColor: '#4CAF50',
+    paddingHorizontal: 32,
+    paddingVertical: 12,
+    borderRadius: 24,
+    marginTop: 8,
+  },
+  adminButtonText: {
+    color: '#4CAF50',
+    fontSize: 16,
+    fontWeight: '600',
+  },
   loadingText: {
     marginTop: 16,
     fontSize: 16,
