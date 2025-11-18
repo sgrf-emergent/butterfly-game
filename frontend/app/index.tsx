@@ -93,6 +93,15 @@ export default function HomeScreen() {
 
         {/* Info Text */}
         <Text style={styles.infoText}>Identify 10 butterflies to test your knowledge!</Text>
+
+        {/* Admin Button */}
+        <TouchableOpacity
+          style={styles.adminButton}
+          onPress={handleAdminPanel}
+          activeOpacity={0.8}
+        >
+          <Text style={styles.adminButtonText}>Admin Panel</Text>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
