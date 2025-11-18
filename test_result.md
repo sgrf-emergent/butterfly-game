@@ -245,7 +245,11 @@ metadata:
   run_ui: false
 
 test_plan:
-  current_focus: []
+  current_focus:
+    - "Admin - Get all butterflies"
+    - "Admin - Create butterfly"
+    - "Admin - Update butterfly"
+    - "Admin - Delete butterfly"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
