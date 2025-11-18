@@ -254,55 +254,6 @@ test_plan:
   test_all: false
   test_priority: "high_first"
 
-backend:
-  - task: "Admin - Get all butterflies"
-    implemented: true
-    working: "NA"
-    file: "server.py"
-    stuck_count: 0
-    priority: "high"
-    needs_retesting: true
-    status_history:
-      - working: "NA"
-        agent: "main"
-        comment: "Created GET /api/admin/butterflies endpoint to retrieve all butterflies for admin management"
-  
-  - task: "Admin - Create butterfly"
-    implemented: true
-    working: "NA"
-    file: "server.py"
-    stuck_count: 0
-    priority: "high"
-    needs_retesting: true
-    status_history:
-      - working: "NA"
-        agent: "main"
-        comment: "Created POST /api/admin/butterfly endpoint to add new butterfly to database"
-  
-  - task: "Admin - Update butterfly"
-    implemented: true
-    working: "NA"
-    file: "server.py"
-    stuck_count: 0
-    priority: "high"
-    needs_retesting: true
-    status_history:
-      - working: "NA"
-        agent: "main"
-        comment: "Created PUT /api/admin/butterfly/:id endpoint to update existing butterfly"
-  
-  - task: "Admin - Delete butterfly"
-    implemented: true
-    working: "NA"
-    file: "server.py"
-    stuck_count: 0
-    priority: "high"
-    needs_retesting: true
-    status_history:
-      - working: "NA"
-        agent: "main"
-        comment: "Created DELETE /api/admin/butterfly/:id endpoint to remove butterfly from database"
-
 agent_communication:
   - agent: "main"
     message: "Initial implementation complete. All 3 backend endpoints implemented (init-butterflies, get butterflies, quiz question). All 3 frontend screens created (home, game, results). Ready for backend testing. Please test all backend endpoints with focus on quiz question randomization and proper data structure."
