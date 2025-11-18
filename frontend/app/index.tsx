@@ -40,6 +40,10 @@ export default function HomeScreen() {
     router.push('/game');
   };
 
+  const handleAdminPanel = () => {
+    router.push('/admin');
+  };
+
   if (loading) {
     return (
       <SafeAreaView style={styles.container}>
