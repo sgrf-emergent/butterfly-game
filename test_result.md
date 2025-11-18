@@ -202,8 +202,59 @@ test_plan:
   test_all: false
   test_priority: "high_first"
 
+backend:
+  - task: "Admin - Get all butterflies"
+    implemented: true
+    working: "NA"
+    file: "server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Created GET /api/admin/butterflies endpoint to retrieve all butterflies for admin management"
+  
+  - task: "Admin - Create butterfly"
+    implemented: true
+    working: "NA"
+    file: "server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Created POST /api/admin/butterfly endpoint to add new butterfly to database"
+  
+  - task: "Admin - Update butterfly"
+    implemented: true
+    working: "NA"
+    file: "server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Created PUT /api/admin/butterfly/:id endpoint to update existing butterfly"
+  
+  - task: "Admin - Delete butterfly"
+    implemented: true
+    working: "NA"
+    file: "server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Created DELETE /api/admin/butterfly/:id endpoint to remove butterfly from database"
+
 agent_communication:
   - agent: "main"
     message: "Initial implementation complete. All 3 backend endpoints implemented (init-butterflies, get butterflies, quiz question). All 3 frontend screens created (home, game, results). Ready for backend testing. Please test all backend endpoints with focus on quiz question randomization and proper data structure."
   - agent: "testing"
     message: "✅ BACKEND TESTING COMPLETE: All 3 backend endpoints tested and working correctly. Fixed critical id field serialization issue in Butterfly model during testing. Database initialization, butterfly retrieval, and quiz question generation all functioning properly with correct data structures and randomization. Backend is ready for frontend integration."
+  - agent: "main"
+    message: "Admin Panel implementation complete. Added 4 new backend endpoints for CRUD operations (GET all, POST create, PUT update, DELETE). Created 2 new frontend screens (/admin for list view with search, /admin/edit for add/edit form). Added Admin Panel button to home screen. All admin endpoints need testing."
