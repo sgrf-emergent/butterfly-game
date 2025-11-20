@@ -59,7 +59,10 @@ export default function HomeScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.content}>
+      <ScrollView 
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+      >
         {/* HM Logo */}
         <View style={styles.logoContainer}>
           <Image
@@ -88,13 +91,12 @@ export default function HomeScreen() {
 
         {/* Difficulty Selection */}
         <View style={styles.difficultyContainer}>
-          <Text style={styles.difficultyLabel}>Select Difficulty:</Text>
+          <Text style={styles.difficultyLabel}>Select Difficulty</Text>
           <View style={styles.difficultyButtons}>
             <TouchableOpacity
               style={[
                 styles.difficultyButton,
                 selectedDifficulty === 1 && styles.difficultyButtonActive,
-                { backgroundColor: selectedDifficulty === 1 ? '#4CAF50' : '#E8F5E9' },
               ]}
               onPress={() => setSelectedDifficulty(1)}
               activeOpacity={0.7}
@@ -113,7 +115,6 @@ export default function HomeScreen() {
               style={[
                 styles.difficultyButton,
                 selectedDifficulty === 2 && styles.difficultyButtonActive,
-                { backgroundColor: selectedDifficulty === 2 ? '#FF9800' : '#E8F5E9' },
               ]}
               onPress={() => setSelectedDifficulty(2)}
               activeOpacity={0.7}
@@ -132,7 +133,6 @@ export default function HomeScreen() {
               style={[
                 styles.difficultyButton,
                 selectedDifficulty === 3 && styles.difficultyButtonActive,
-                { backgroundColor: selectedDifficulty === 3 ? '#F44336' : '#E8F5E9' },
               ]}
               onPress={() => setSelectedDifficulty(3)}
               activeOpacity={0.7}
@@ -159,7 +159,7 @@ export default function HomeScreen() {
         </TouchableOpacity>
 
         {/* Info Text */}
-        <Text style={styles.infoText}>Identify 10 butterflies to test your knowledge!</Text>
+        <Text style={styles.infoText}>10 rounds • Selected difficulty: {selectedDifficulty === 1 ? 'Easy' : selectedDifficulty === 2 ? 'Medium' : 'Hard'}</Text>
 
         {/* Admin Button */}
         <TouchableOpacity
@@ -169,7 +169,7 @@ export default function HomeScreen() {
         >
           <Text style={styles.adminButtonText}>Admin Panel</Text>
         </TouchableOpacity>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
