@@ -268,4 +268,44 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#4CAF50',
   },
+  difficultyContainer: {
+    width: '100%',
+    alignItems: 'center',
+    paddingHorizontal: 24,
+  },
+  difficultyLabel: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#2E7D32',
+    marginBottom: 12,
+  },
+  difficultyButtons: {
+    flexDirection: 'row',
+    gap: 12,
+    width: '100%',
+  },
+  difficultyButton: {
+    flex: 1,
+    paddingVertical: 14,
+    borderRadius: 12,
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: '#A5D6A7',
+  },
+  difficultyButtonActive: {
+    borderColor: 'transparent',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 4,
+  },
+  difficultyButtonText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#2E7D32',
+  },
+  difficultyButtonTextActive: {
+    color: '#fff',
+  },
 });
