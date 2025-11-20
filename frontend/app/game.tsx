@@ -125,7 +125,7 @@ export default function GameScreen() {
       // Game over
       router.push({
         pathname: '/results',
-        params: { score, total: 10 },
+        params: { score, total: 10, difficulty },
       });
     } else {
       setCurrentRound(currentRound + 1);
