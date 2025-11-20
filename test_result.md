@@ -249,6 +249,36 @@ frontend:
       - working: "NA"
         agent: "main"
         comment: "Created results screen with final score display, percentage, stats breakdown, Play Again and Home buttons"
+  
+  - task: "Admin Panel - List butterflies"
+    implemented: true
+    working: true
+    file: "app/admin/index.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Created admin list screen with search functionality, butterfly cards showing image/name/difficulty, Edit and Delete buttons for each butterfly, Add New Butterfly button"
+      - working: true
+        agent: "main"
+        comment: "✅ VERIFIED via screenshots: Admin list page displays all 30 butterflies correctly with images, search bar, and action buttons working properly"
+  
+  - task: "Admin Panel - Add/Edit butterfly form"
+    implemented: true
+    working: true
+    file: "app/admin/edit.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Created add/edit form with fields for Common Name, Latin Name, Image URL (with preview), and Difficulty selector (Easy/Medium/Hard). Includes validation, loading states, and backend integration"
+      - working: true
+        agent: "main"
+        comment: "✅ VERIFIED via screenshots: Add form and Edit form both working correctly. Edit form pre-fills data from selected butterfly with image preview. Form validation working. Navigation between list and form screens working perfectly"
 
 metadata:
   created_by: "main_agent"
