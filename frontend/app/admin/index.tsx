@@ -33,9 +33,12 @@ export default function AdminHomeScreen() {
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
 
-  useEffect(() => {
-    loadButterflies();
-  }, []);
+  // Reload butterflies when screen comes into focus (after returning from edit screen)
+  useFocusEffect(
+    React.useCallback(() => {
+      loadButterflies();
+    }, [])
+  );
 
   useEffect(() => {
     if (searchQuery.trim() === '') {
