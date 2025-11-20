@@ -30,6 +30,9 @@ interface QuizQuestion {
 
 export default function GameScreen() {
   const router = useRouter();
+  const params = useLocalSearchParams();
+  const difficulty = Number(params.difficulty) || 1; // Get difficulty from params, default to 1 (Easy)
+  
   const [loading, setLoading] = useState(true);
   const [question, setQuestion] = useState<QuizQuestion | null>(null);
   const [currentRound, setCurrentRound] = useState(1);
