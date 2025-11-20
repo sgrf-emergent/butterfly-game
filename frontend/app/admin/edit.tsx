@@ -154,6 +154,8 @@ export default function EditButterflyScreen() {
               placeholderTextColor="#999"
               value={commonName}
               onChangeText={setCommonName}
+              editable={!saving}
+              autoCapitalize="words"
             />
           </View>
 
@@ -166,6 +168,8 @@ export default function EditButterflyScreen() {
               placeholderTextColor="#999"
               value={latinName}
               onChangeText={setLatinName}
+              editable={!saving}
+              autoCapitalize="words"
             />
           </View>
 
@@ -178,6 +182,9 @@ export default function EditButterflyScreen() {
               placeholderTextColor="#999"
               value={imageUrl}
               onChangeText={setImageUrl}
+              editable={!saving}
+              autoCapitalize="none"
+              autoCorrect={false}
               multiline
               numberOfLines={3}
             />
