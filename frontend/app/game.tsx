@@ -74,7 +74,7 @@ export default function GameScreen() {
   const loadQuestion = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`${EXPO_PUBLIC_BACKEND_URL}/api/quiz/question`);
+      const response = await axios.get(`${EXPO_PUBLIC_BACKEND_URL}/api/quiz/question?difficulty=${difficulty}`);
       setQuestion(response.data);
       setShowOptions(false);
       setSelectedAnswer(null);
