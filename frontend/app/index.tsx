@@ -86,6 +86,69 @@ export default function HomeScreen() {
           />
         </View>
 
+        {/* Difficulty Selection */}
+        <View style={styles.difficultyContainer}>
+          <Text style={styles.difficultyLabel}>Select Difficulty:</Text>
+          <View style={styles.difficultyButtons}>
+            <TouchableOpacity
+              style={[
+                styles.difficultyButton,
+                selectedDifficulty === 1 && styles.difficultyButtonActive,
+                { backgroundColor: selectedDifficulty === 1 ? '#4CAF50' : '#E8F5E9' },
+              ]}
+              onPress={() => setSelectedDifficulty(1)}
+              activeOpacity={0.7}
+            >
+              <Text
+                style={[
+                  styles.difficultyButtonText,
+                  selectedDifficulty === 1 && styles.difficultyButtonTextActive,
+                ]}
+              >
+                Easy
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[
+                styles.difficultyButton,
+                selectedDifficulty === 2 && styles.difficultyButtonActive,
+                { backgroundColor: selectedDifficulty === 2 ? '#FF9800' : '#E8F5E9' },
+              ]}
+              onPress={() => setSelectedDifficulty(2)}
+              activeOpacity={0.7}
+            >
+              <Text
+                style={[
+                  styles.difficultyButtonText,
+                  selectedDifficulty === 2 && styles.difficultyButtonTextActive,
+                ]}
+              >
+                Medium
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[
+                styles.difficultyButton,
+                selectedDifficulty === 3 && styles.difficultyButtonActive,
+                { backgroundColor: selectedDifficulty === 3 ? '#F44336' : '#E8F5E9' },
+              ]}
+              onPress={() => setSelectedDifficulty(3)}
+              activeOpacity={0.7}
+            >
+              <Text
+                style={[
+                  styles.difficultyButtonText,
+                  selectedDifficulty === 3 && styles.difficultyButtonTextActive,
+                ]}
+              >
+                Hard
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
         {/* Start Button */}
         <TouchableOpacity
           style={styles.startButton}
