@@ -84,6 +84,12 @@ async def get_quiz_question(difficulty: int = 1):
         "options": options
     }
 
+@api_router.post("/reset-database")
+async def reset_database():
+    """Reset the database by deleting all butterflies"""
+    result = await db.butterflies.delete_many({})
+    return {"message": f"Deleted {result.deleted_count} butterflies"}
+
 @api_router.post("/init-butterflies")
 async def initialize_butterflies():
     """Initialize the database with butterfly data"""
