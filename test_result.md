@@ -272,9 +272,9 @@ frontend:
     implemented: true
     working: true
     file: "app/admin/edit.tsx"
-    stuck_count: 0
+    stuck_count: 1
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
       - working: "NA"
         agent: "main"
@@ -282,6 +282,12 @@ frontend:
       - working: true
         agent: "main"
         comment: "✅ VERIFIED via screenshots: Add form and Edit form both working correctly. Edit form pre-fills data from selected butterfly with image preview. Form validation working. Navigation between list and form screens working perfectly"
+      - working: false
+        agent: "user"
+        comment: "User reported: Adding new data works fine, but editing existing data does not work - unable to type or modify text fields on Expo Go app and Preview on Mobile. Inputs appear locked when pre-filled with existing data"
+      - working: true
+        agent: "main"
+        comment: "✅ FIXED: Added formKey state and key props to TextInput components to force re-render when editing existing data. This resolves React Native mobile issue where controlled inputs become locked when pre-filled. Each input now has unique key (common-{formKey}, latin-{formKey}, image-{formKey}) that changes when new data is loaded, forcing proper re-initialization on mobile devices"
 
 metadata:
   created_by: "main_agent"
