@@ -19,6 +19,7 @@ export default function HomeScreen() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [initialized, setInitialized] = useState(false);
+  const [selectedDifficulty, setSelectedDifficulty] = useState<number>(1); // 1=Easy, 2=Medium, 3=Hard
 
   useEffect(() => {
     initializeApp();
@@ -37,7 +38,10 @@ export default function HomeScreen() {
   };
 
   const handleStartGame = () => {
-    router.push('/game');
+    router.push({
+      pathname: '/game',
+      params: { difficulty: selectedDifficulty }
+    });
   };
 
   const handleAdminPanel = () => {
