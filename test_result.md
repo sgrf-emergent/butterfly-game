@@ -264,6 +264,9 @@ frontend:
       - working: true
         agent: "main"
         comment: "✅ VERIFIED via screenshots: Admin list page displays all 30 butterflies correctly with images, search bar, and action buttons working properly"
+      - working: true
+        agent: "main"
+        comment: "✅ FIXED: Added useFocusEffect hook to automatically reload butterfly list when returning from edit screen. Now when you edit a butterfly and save, the list immediately shows the updated data"
   
   - task: "Admin Panel - Add/Edit butterfly form"
     implemented: true
