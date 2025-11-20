@@ -16,6 +16,7 @@ export default function ResultsScreen() {
   const params = useLocalSearchParams();
   const score = parseInt(params.score as string) || 0;
   const total = parseInt(params.total as string) || 10;
+  const difficulty = parseInt(params.difficulty as string) || 1;
   const percentage = Math.round((score / total) * 100);
 
   const getMessage = () => {
@@ -25,8 +26,29 @@ export default function ResultsScreen() {
     return 'Keep Practicing! 💪';
   };
 
+  const getDifficultyLabel = () => {
+    switch(difficulty) {
+      case 1: return 'Easy';
+      case 2: return 'Medium';
+      case 3: return 'Hard';
+      default: return 'Easy';
+    }
+  };
+
+  const getDifficultyColor = () => {
+    switch(difficulty) {
+      case 1: return '#4CAF50';
+      case 2: return '#FF9800';
+      case 3: return '#F44336';
+      default: return '#4CAF50';
+    }
+  };
+
   const handlePlayAgain = () => {
-    router.replace('/game');
+    router.replace({
+      pathname: '/game',
+      params: { difficulty }
+    });
   };
 
   const handleHome = () => {
