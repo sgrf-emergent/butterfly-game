@@ -10,7 +10,7 @@ import {
   ScrollView,
 } from 'react-native';
 import { Image } from 'expo-image';
-import { useRouter } from 'expo-router';
+import { useRouter, useLocalSearchParams } from 'expo-router';
 import axios from 'axios';
 
 const { width, height } = Dimensions.get('window');
