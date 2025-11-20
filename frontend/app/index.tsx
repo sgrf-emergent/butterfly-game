@@ -97,7 +97,7 @@ export default function HomeScreen() {
             <TouchableOpacity
               style={[
                 styles.difficultyButton,
-                selectedDifficulty === 1 && styles.difficultyButtonActive,
+                selectedDifficulty === 1 && [styles.difficultyButtonActive, { backgroundColor: '#4CAF50' }],
               ]}
               onPress={() => setSelectedDifficulty(1)}
               activeOpacity={0.7}
@@ -115,7 +115,7 @@ export default function HomeScreen() {
             <TouchableOpacity
               style={[
                 styles.difficultyButton,
-                selectedDifficulty === 2 && styles.difficultyButtonActive,
+                selectedDifficulty === 2 && [styles.difficultyButtonActive, { backgroundColor: '#FF9800' }],
               ]}
               onPress={() => setSelectedDifficulty(2)}
               activeOpacity={0.7}
@@ -133,7 +133,7 @@ export default function HomeScreen() {
             <TouchableOpacity
               style={[
                 styles.difficultyButton,
-                selectedDifficulty === 3 && styles.difficultyButtonActive,
+                selectedDifficulty === 3 && [styles.difficultyButtonActive, { backgroundColor: '#F44336' }],
               ]}
               onPress={() => setSelectedDifficulty(3)}
               activeOpacity={0.7}
