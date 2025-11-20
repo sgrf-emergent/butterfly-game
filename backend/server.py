@@ -56,13 +56,13 @@ async def get_butterflies():
     return [Butterfly(**{**b, "id": str(b["_id"])}) for b in butterflies]
 
 @api_router.get("/quiz/question")
-async def get_quiz_question():
-    """Get a random quiz question with 5 options"""
-    # Get all butterflies
-    all_butterflies = await db.butterflies.find().to_list(100)
+async def get_quiz_question(difficulty: int = 1):
+    """Get a random quiz question with 5 options filtered by difficulty"""
+    # Get butterflies filtered by difficulty
+    all_butterflies = await db.butterflies.find({"difficulty": difficulty}).to_list(100)
     
     if len(all_butterflies) < 5:
-        raise HTTPException(status_code=400, detail="Not enough butterflies in database")
+        raise HTTPException(status_code=400, detail=f"Not enough butterflies in database for difficulty {difficulty}")
     
     # Select random correct answer
     correct_butterfly = random.choice(all_butterflies)
