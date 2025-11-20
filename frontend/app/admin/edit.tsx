@@ -160,6 +160,7 @@ export default function EditButterflyScreen() {
           <View style={styles.inputGroup}>
             <Text style={styles.label}>Common Name *</Text>
             <TextInput
+              key={`common-${formKey}`}
               style={styles.input}
               placeholder="e.g., Monarch"
               placeholderTextColor="#999"
@@ -174,6 +175,7 @@ export default function EditButterflyScreen() {
           <View style={styles.inputGroup}>
             <Text style={styles.label}>Latin Name *</Text>
             <TextInput
+              key={`latin-${formKey}`}
               style={styles.input}
               placeholder="e.g., Danaus plexippus"
               placeholderTextColor="#999"
@@ -188,6 +190,7 @@ export default function EditButterflyScreen() {
           <View style={styles.inputGroup}>
             <Text style={styles.label}>Image URL *</Text>
             <TextInput
+              key={`image-${formKey}`}
               style={[styles.input, styles.textArea]}
               placeholder="https://example.com/butterfly.jpg"
               placeholderTextColor="#999"
