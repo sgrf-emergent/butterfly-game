@@ -61,6 +61,11 @@ export default function ResultsScreen() {
         {/* Title */}
         <Text style={styles.title}>Game Over!</Text>
 
+        {/* Difficulty Badge */}
+        <View style={[styles.difficultyBadge, { backgroundColor: getDifficultyColor() }]}>
+          <Text style={styles.difficultyText}>{getDifficultyLabel()}</Text>
+        </View>
+
         {/* Score Circle */}
         <View style={styles.scoreCircle}>
           <Text style={styles.scoreNumber}>{score}</Text>
