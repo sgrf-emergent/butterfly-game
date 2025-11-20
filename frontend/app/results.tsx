@@ -129,7 +129,20 @@ const styles = StyleSheet.create({
     fontSize: 36,
     fontWeight: 'bold',
     color: '#2E7D32',
-    marginBottom: 32,
+    marginBottom: 16,
+  },
+  difficultyBadge: {
+    paddingHorizontal: 24,
+    paddingVertical: 10,
+    borderRadius: 20,
+    marginBottom: 24,
+  },
+  difficultyText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+    textTransform: 'uppercase',
+    letterSpacing: 1,
   },
   scoreCircle: {
     width: 200,
