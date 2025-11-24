@@ -226,26 +226,89 @@ export default function EditButterflyScreen() {
             />
           </View>
 
-          {/* Image URL */}
+          {/* Image Source Selection */}
           <View style={styles.inputGroup}>
-            <Text style={styles.label}>Image URL *</Text>
-            <TextInput
-              key={`image-${formKey}`}
-              style={[styles.input, styles.textArea]}
-              placeholder="https://example.com/butterfly.jpg"
-              placeholderTextColor="#999"
-              value={imageUrl}
-              onChangeText={setImageUrl}
-              editable={!saving}
-              autoCapitalize="none"
-              autoCorrect={false}
-              multiline
-              numberOfLines={3}
-            />
-            <Text style={styles.helperText}>
-              Enter a direct image URL (must start with http:// or https://)
-            </Text>
+            <Text style={styles.label}>Image Source *</Text>
+            <View style={styles.imageSourceButtons}>
+              <TouchableOpacity
+                style={[
+                  styles.sourceButton,
+                  imageSource === 'url' && styles.sourceButtonActive
+                ]}
+                onPress={() => setImageSource('url')}
+                disabled={saving}
+              >
+                <Text style={[
+                  styles.sourceButtonText,
+                  imageSource === 'url' && styles.sourceButtonTextActive
+                ]}>
+                  Enter URL
+                </Text>
+              </TouchableOpacity>
+              
+              <TouchableOpacity
+                style={[
+                  styles.sourceButton,
+                  imageSource === 'gallery' && styles.sourceButtonActive
+                ]}
+                onPress={() => {
+                  setImageSource('gallery');
+                  pickImage();
+                }}
+                disabled={saving || pickingImage}
+              >
+                {pickingImage ? (
+                  <ActivityIndicator size="small" color="#fff" />
+                ) : (
+                  <Text style={[
+                    styles.sourceButtonText,
+                    imageSource === 'gallery' && styles.sourceButtonTextActive
+                  ]}>
+                    📷 Pick from Gallery
+                  </Text>
+                )}
+              </TouchableOpacity>
+            </View>
           </View>
+
+          {/* Image URL Input (only show if URL mode) */}
+          {imageSource === 'url' && (
+            <View style={styles.inputGroup}>
+              <Text style={styles.label}>Image URL *</Text>
+              <TextInput
+                key={`image-${formKey}`}
+                style={[styles.input, styles.textArea]}
+                placeholder="https://example.com/butterfly.jpg"
+                placeholderTextColor="#999"
+                value={imageUrl}
+                onChangeText={setImageUrl}
+                editable={!saving}
+                autoCapitalize="none"
+                autoCorrect={false}
+                multiline
+                numberOfLines={3}
+              />
+              <Text style={styles.helperText}>
+                Enter a direct image URL (must start with http:// or https://)
+              </Text>
+            </View>
+          )}
+
+          {/* Gallery picked image info */}
+          {imageSource === 'gallery' && imageUrl.startsWith('data:image') && (
+            <View style={styles.galleryInfo}>
+              <Text style={styles.galleryInfoText}>✅ Image selected from gallery</Text>
+              <TouchableOpacity 
+                style={styles.changeImageButton}
+                onPress={pickImage}
+                disabled={saving || pickingImage}
+              >
+                <Text style={styles.changeImageButtonText}>
+                  {pickingImage ? 'Selecting...' : 'Change Image'}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          )}
 
           {/* Difficulty */}
           <View style={styles.inputGroup}>
