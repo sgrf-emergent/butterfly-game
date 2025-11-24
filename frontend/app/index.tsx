@@ -65,6 +65,10 @@ export default function HomeScreen() {
     router.push('/settings');
   };
 
+  const handleScores = () => {
+    router.push('/scores');
+  };
+
   if (loading) {
     return (
       <SafeAreaView style={styles.container}>
