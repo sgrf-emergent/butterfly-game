@@ -198,6 +198,67 @@ async def delete_butterfly(butterfly_id: str):
     
     return {"message": "Butterfly deleted successfully"}
 
+# Score endpoints
+@api_router.post("/scores")
+async def save_score(score_data: GameScore):
+    """Save a game score"""
+    from datetime import datetime
+    
+    score_dict = {
+        "username": score_data.username,
+        "score": score_data.score,
+        "total": score_data.total,
+        "difficulty": score_data.difficulty,
+        "percentage": score_data.percentage,
+        "date": datetime.utcnow().isoformat()
+    }
+    
+    result = await db.scores.insert_one(score_dict)
+    score_dict["id"] = str(result.inserted_id)
+    
+    return GameScore(**score_dict)
+
+@api_router.get("/scores/{username}")
+async def get_user_scores(username: str):
+    """Get personal best scores and recent games for a user"""
+    # Get all scores for the user
+    all_scores = await db.scores.find({"username": username}).to_list(1000)
+    
+    if not all_scores:
+        return {
+            "personalBests": {
+                "easy": None,
+                "medium": None,
+                "hard": None
+            },
+            "recentGames": [],
+            "totalGames": 0
+        }
+    
+    # Calculate personal bests by difficulty
+    easy_scores = [s for s in all_scores if s["difficulty"] == 1]
+    medium_scores = [s for s in all_scores if s["difficulty"] == 2]
+    hard_scores = [s for s in all_scores if s["difficulty"] == 3]
+    
+    personal_bests = {
+        "easy": max(easy_scores, key=lambda x: x["percentage"])["percentage"] if easy_scores else None,
+        "medium": max(medium_scores, key=lambda x: x["percentage"])["percentage"] if medium_scores else None,
+        "hard": max(hard_scores, key=lambda x: x["percentage"])["percentage"] if hard_scores else None
+    }
+    
+    # Get recent 10 games (sorted by date descending)
+    recent_games = sorted(all_scores, key=lambda x: x["date"], reverse=True)[:10]
+    recent_games_formatted = [
+        GameScore(**{**game, "id": str(game["_id"])})
+        for game in recent_games
+    ]
+    
+    return {
+        "personalBests": personal_bests,
+        "recentGames": recent_games_formatted,
+        "totalGames": len(all_scores)
+    }
+
 # Include the router in the main app
 app.include_router(api_router)
 
