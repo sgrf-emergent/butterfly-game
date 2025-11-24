@@ -489,4 +489,56 @@ const styles = StyleSheet.create({
   bottomPadding: {
     height: 40,
   },
+  imageSourceButtons: {
+    flexDirection: 'row',
+    gap: 12,
+  },
+  sourceButton: {
+    flex: 1,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderRadius: 8,
+    backgroundColor: '#E8F5E9',
+    borderWidth: 2,
+    borderColor: '#C8E6C9',
+    alignItems: 'center',
+  },
+  sourceButtonActive: {
+    backgroundColor: '#4CAF50',
+    borderColor: '#4CAF50',
+  },
+  sourceButtonText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#2E7D32',
+  },
+  sourceButtonTextActive: {
+    color: '#fff',
+  },
+  galleryInfo: {
+    backgroundColor: '#E8F5E9',
+    padding: 16,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#C8E6C9',
+    marginBottom: 16,
+  },
+  galleryInfoText: {
+    fontSize: 14,
+    color: '#2E7D32',
+    fontWeight: '600',
+    marginBottom: 12,
+  },
+  changeImageButton: {
+    backgroundColor: '#4CAF50',
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    borderRadius: 8,
+    alignItems: 'center',
+  },
+  changeImageButtonText: {
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: '600',
+  },
 });
