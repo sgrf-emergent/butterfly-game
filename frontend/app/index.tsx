@@ -368,13 +368,28 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 20,
   },
-  adminButton: {
-    paddingVertical: 10,
-    paddingHorizontal: 20,
+  bottomButtons: {
+    flexDirection: 'row',
+    gap: 12,
+    width: '100%',
   },
-  adminButtonText: {
+  secondaryButton: {
+    flex: 1,
+    backgroundColor: '#fff',
+    paddingVertical: 12,
+    borderRadius: 12,
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: '#C8E6C9',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  secondaryButtonText: {
     color: '#2E7D32',
-    fontSize: 15,
+    fontSize: 14,
     fontWeight: '600',
   },
   loadingContainer: {
