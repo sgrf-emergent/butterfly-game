@@ -70,6 +70,41 @@ export default function EditButterflyScreen() {
     }
   }, [params.butterfly]);
 
+  const pickImage = async () => {
+    try {
+      setPickingImage(true);
+      
+      // Request permission
+      const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      
+      if (permissionResult.granted === false) {
+        Alert.alert('Permission Required', 'Please allow access to your photo library to upload images');
+        return;
+      }
+
+      // Launch image picker
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 0.7, // Compress to reduce size
+        base64: true, // Get base64 string
+      });
+
+      if (!result.canceled && result.assets[0].base64) {
+        // Set the base64 image
+        const base64Image = `data:image/jpeg;base64,${result.assets[0].base64}`;
+        setImageUrl(base64Image);
+        setImageSource('gallery');
+      }
+    } catch (error) {
+      console.error('Error picking image:', error);
+      Alert.alert('Error', 'Failed to pick image. Please try again.');
+    } finally {
+      setPickingImage(false);
+    }
+  };
+
   const validateForm = () => {
     if (!commonName.trim()) {
       Alert.alert('Validation Error', 'Please enter a common name');
@@ -80,11 +115,12 @@ export default function EditButterflyScreen() {
       return false;
     }
     if (!imageUrl.trim()) {
-      Alert.alert('Validation Error', 'Please enter an image URL');
+      Alert.alert('Validation Error', 'Please provide an image (URL or from gallery)');
       return false;
     }
-    if (!imageUrl.startsWith('http://') && !imageUrl.startsWith('https://')) {
-      Alert.alert('Validation Error', 'Image URL must start with http:// or https://');
+    // Allow both URLs and base64 images
+    if (!imageUrl.startsWith('http://') && !imageUrl.startsWith('https://') && !imageUrl.startsWith('data:image')) {
+      Alert.alert('Validation Error', 'Image must be a valid URL or selected from gallery');
       return false;
     }
     return true;
