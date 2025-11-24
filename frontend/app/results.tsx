@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -9,7 +9,10 @@ import {
   Dimensions,
 } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
+import axios from 'axios';
+import { authUtils } from '../utils/auth';
 
+const EXPO_PUBLIC_BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
 const { width, height } = Dimensions.get('window');
 
 export default function ResultsScreen() {
@@ -19,6 +22,35 @@ export default function ResultsScreen() {
   const total = parseInt(params.total as string) || 10;
   const difficulty = parseInt(params.difficulty as string) || 1;
   const percentage = Math.round((score / total) * 100);
+  const [scoreSaved, setScoreSaved] = useState(false);
+
+  useEffect(() => {
+    saveScore();
+  }, []);
+
+  const saveScore = async () => {
+    try {
+      const username = await authUtils.getUsername();
+      if (!username) {
+        console.log('No username found, score not saved');
+        return;
+      }
+
+      await axios.post(`${EXPO_PUBLIC_BACKEND_URL}/api/scores`, {
+        username,
+        score,
+        total,
+        difficulty,
+        percentage,
+        date: new Date().toISOString()
+      });
+
+      setScoreSaved(true);
+      console.log('Score saved successfully');
+    } catch (error) {
+      console.error('Error saving score:', error);
+    }
+  };
 
   const getMessage = () => {
     if (percentage >= 90) return 'Outstanding! 🦋';
