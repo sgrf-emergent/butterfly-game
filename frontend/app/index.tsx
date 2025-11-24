@@ -16,11 +16,14 @@ import axios from 'axios';
 const { width, height } = Dimensions.get('window');
 const EXPO_PUBLIC_BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
 
+import { authUtils } from '../utils/auth';
+
 export default function HomeScreen() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [initialized, setInitialized] = useState(false);
   const [selectedDifficulty, setSelectedDifficulty] = useState<number>(1); // 1=Easy, 2=Medium, 3=Hard
+  const [username, setUsername] = useState<string>('');
 
   useEffect(() => {
     initializeApp();
@@ -28,6 +31,15 @@ export default function HomeScreen() {
 
   const initializeApp = async () => {
     try {
+      // Check if user has a username
+      const savedUsername = await authUtils.getUsername();
+      if (!savedUsername) {
+        // Redirect to setup screen
+        router.replace('/setup');
+        return;
+      }
+      setUsername(savedUsername);
+      
       // Initialize butterflies in database
       await axios.post(`${EXPO_PUBLIC_BACKEND_URL}/api/init-butterflies`);
       setInitialized(true);
