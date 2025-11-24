@@ -44,6 +44,18 @@ class GameSession(BaseModel):
     total: int
     timestamp: str
 
+class GameScore(BaseModel):
+    id: Optional[str] = None
+    username: str
+    score: int
+    total: int
+    difficulty: int
+    percentage: int
+    date: str
+
+    class Config:
+        populate_by_name = True
+
 # Routes
 @api_router.get("/")
 async def root():
