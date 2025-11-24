@@ -61,6 +61,10 @@ export default function HomeScreen() {
     router.push('/admin');
   };
 
+  const handleSettings = () => {
+    router.push('/settings');
+  };
+
   if (loading) {
     return (
       <SafeAreaView style={styles.container}>
