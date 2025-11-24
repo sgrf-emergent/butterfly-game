@@ -58,7 +58,10 @@ export default function ResultsScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.content}>
+      <ScrollView 
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+      >
         {/* Title */}
         <Text style={styles.title}>Game Over!</Text>
 
@@ -110,7 +113,7 @@ export default function ResultsScreen() {
             <Text style={styles.homeButtonText}>Home</Text>
           </TouchableOpacity>
         </View>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
