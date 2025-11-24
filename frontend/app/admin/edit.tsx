@@ -41,6 +41,8 @@ export default function EditButterflyScreen() {
   const [difficulty, setDifficulty] = useState(1);
   const [saving, setSaving] = useState(false);
   const [formKey, setFormKey] = useState(0); // Add form key for forcing re-render
+  const [imageSource, setImageSource] = useState<'url' | 'gallery'>('url'); // Toggle between URL and gallery
+  const [pickingImage, setPickingImage] = useState(false);
 
   useEffect(() => {
     if (params.butterfly) {
