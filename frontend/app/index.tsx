@@ -197,14 +197,24 @@ export default function HomeScreen() {
         {/* Info Text */}
         <Text style={styles.infoText}>10 rounds • Selected difficulty: {selectedDifficulty === 1 ? 'Easy' : selectedDifficulty === 2 ? 'Medium' : 'Hard'}</Text>
 
-        {/* Admin Button */}
-        <TouchableOpacity
-          style={styles.adminButton}
-          onPress={handleAdminPanel}
-          activeOpacity={0.8}
-        >
-          <Text style={styles.adminButtonText}>Admin Panel</Text>
-        </TouchableOpacity>
+        {/* Bottom Buttons */}
+        <View style={styles.bottomButtons}>
+          <TouchableOpacity
+            style={styles.secondaryButton}
+            onPress={handleScores}
+            activeOpacity={0.8}
+          >
+            <Text style={styles.secondaryButtonText}>📊 My Scores</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.secondaryButton}
+            onPress={handleAdminPanel}
+            activeOpacity={0.8}
+          >
+            <Text style={styles.secondaryButtonText}>⚙️ Admin Panel</Text>
+          </TouchableOpacity>
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
