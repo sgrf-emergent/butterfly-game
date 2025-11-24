@@ -80,6 +80,21 @@ export default function HomeScreen() {
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
+        {/* Username Display */}
+        {username && (
+          <View style={styles.usernameContainer}>
+            <Text style={styles.usernameLabel}>Player:</Text>
+            <Text style={styles.usernameText}>{username}</Text>
+            <TouchableOpacity
+              style={styles.settingsIcon}
+              onPress={handleSettings}
+              activeOpacity={0.7}
+            >
+              <Text style={styles.settingsIconText}>⚙️</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+
         {/* HM Logo */}
         <View style={styles.logoContainer}>
           <Image
