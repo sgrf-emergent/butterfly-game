@@ -10,7 +10,7 @@ import {
   ScrollView,
 } from 'react-native';
 import { Image } from 'expo-image';
-import { useRouter } from 'expo-router';
+import { useRouter, useLocalSearchParams } from 'expo-router';
 import axios from 'axios';
 
 const { width, height } = Dimensions.get('window');
@@ -30,6 +30,9 @@ interface QuizQuestion {
 
 export default function GameScreen() {
   const router = useRouter();
+  const params = useLocalSearchParams();
+  const difficulty = Number(params.difficulty) || 1; // Get difficulty from params, default to 1 (Easy)
+  
   const [loading, setLoading] = useState(true);
   const [question, setQuestion] = useState<QuizQuestion | null>(null);
   const [currentRound, setCurrentRound] = useState(1);
@@ -71,7 +74,7 @@ export default function GameScreen() {
   const loadQuestion = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`${EXPO_PUBLIC_BACKEND_URL}/api/quiz/question`);
+      const response = await axios.get(`${EXPO_PUBLIC_BACKEND_URL}/api/quiz/question?difficulty=${difficulty}`);
       setQuestion(response.data);
       setShowOptions(false);
       setSelectedAnswer(null);
@@ -122,7 +125,7 @@ export default function GameScreen() {
       // Game over
       router.push({
         pathname: '/results',
-        params: { score, total: 10 },
+        params: { score, total: 10, difficulty },
       });
     } else {
       setCurrentRound(currentRound + 1);

@@ -38,6 +38,7 @@ export default function EditButterflyScreen() {
   const [imageUrl, setImageUrl] = useState('');
   const [difficulty, setDifficulty] = useState(1);
   const [saving, setSaving] = useState(false);
+  const [formKey, setFormKey] = useState(0); // Add form key for forcing re-render
 
   useEffect(() => {
     if (params.butterfly) {
@@ -49,11 +50,21 @@ export default function EditButterflyScreen() {
         setLatinName(butterfly.latinName);
         setImageUrl(butterfly.imageUrl);
         setDifficulty(butterfly.difficulty);
+        setFormKey(prev => prev + 1); // Force form re-render with new data
       } catch (error) {
         console.error('Error parsing butterfly data:', error);
       }
+    } else {
+      // Reset form for add mode
+      setIsEditMode(false);
+      setButterflyId(undefined);
+      setCommonName('');
+      setLatinName('');
+      setImageUrl('');
+      setDifficulty(1);
+      setFormKey(prev => prev + 1);
     }
-  }, [params]);
+  }, [params.butterfly]);
 
   const validateForm = () => {
     if (!commonName.trim()) {
@@ -149,11 +160,14 @@ export default function EditButterflyScreen() {
           <View style={styles.inputGroup}>
             <Text style={styles.label}>Common Name *</Text>
             <TextInput
+              key={`common-${formKey}`}
               style={styles.input}
               placeholder="e.g., Monarch"
               placeholderTextColor="#999"
               value={commonName}
               onChangeText={setCommonName}
+              editable={!saving}
+              autoCapitalize="words"
             />
           </View>
 
@@ -161,11 +175,14 @@ export default function EditButterflyScreen() {
           <View style={styles.inputGroup}>
             <Text style={styles.label}>Latin Name *</Text>
             <TextInput
+              key={`latin-${formKey}`}
               style={styles.input}
               placeholder="e.g., Danaus plexippus"
               placeholderTextColor="#999"
               value={latinName}
               onChangeText={setLatinName}
+              editable={!saving}
+              autoCapitalize="words"
             />
           </View>
 
@@ -173,11 +190,15 @@ export default function EditButterflyScreen() {
           <View style={styles.inputGroup}>
             <Text style={styles.label}>Image URL *</Text>
             <TextInput
+              key={`image-${formKey}`}
               style={[styles.input, styles.textArea]}
               placeholder="https://example.com/butterfly.jpg"
               placeholderTextColor="#999"
               value={imageUrl}
               onChangeText={setImageUrl}
+              editable={!saving}
+              autoCapitalize="none"
+              autoCorrect={false}
               multiline
               numberOfLines={3}
             />

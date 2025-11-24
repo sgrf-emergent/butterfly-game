@@ -12,7 +12,7 @@ import {
   Dimensions,
 } from 'react-native';
 import { Image } from 'expo-image';
-import { useRouter } from 'expo-router';
+import { useRouter, useFocusEffect } from 'expo-router';
 import axios from 'axios';
 
 const { width } = Dimensions.get('window');
@@ -33,9 +33,12 @@ export default function AdminHomeScreen() {
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
 
-  useEffect(() => {
-    loadButterflies();
-  }, []);
+  // Reload butterflies when screen comes into focus (after returning from edit screen)
+  useFocusEffect(
+    React.useCallback(() => {
+      loadButterflies();
+    }, [])
+  );
 
   useEffect(() => {
     if (searchQuery.trim() === '') {
