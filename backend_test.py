@@ -32,10 +32,13 @@ class BackendTester:
             "init_butterflies": {"passed": False, "details": ""},
             "get_butterflies": {"passed": False, "details": ""},
             "quiz_question": {"passed": False, "details": ""},
+            "quiz_question_difficulty": {"passed": False, "details": ""},
             "admin_get_butterflies": {"passed": False, "details": ""},
             "admin_create_butterfly": {"passed": False, "details": ""},
             "admin_update_butterfly": {"passed": False, "details": ""},
             "admin_delete_butterfly": {"passed": False, "details": ""},
+            "save_score": {"passed": False, "details": ""},
+            "get_user_scores": {"passed": False, "details": ""},
             "overall": {"passed": False, "critical_issues": [], "minor_issues": []}
         }
         self.created_butterfly_id = None
