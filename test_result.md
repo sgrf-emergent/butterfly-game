@@ -107,23 +107,26 @@ user_problem_statement: "Butterfly identification mobile game app (Phase 1) with
 backend:
   - task: "MongoDB to MySQL Migration"
     implemented: true
-    working: "NA"
+    working: true
     file: "server.py"
     stuck_count: 0
     priority: "critical"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Migrated entire backend from MongoDB to MySQL. Installed MySQL/MariaDB server, created testdata database with butterflies and scores tables. Migrated 30 butterflies and 4 scores. Replaced motor with aiomysql, rewrote all database operations to use SQL instead of MongoDB queries. Updated .env with configurable MySQL credentials. Backend started successfully with MySQL connection pool."
+      - working: true
+        agent: "testing"
+        comment: "✅ MYSQL MIGRATION SUCCESSFUL: Comprehensive testing of all 10 backend endpoints completed successfully. All endpoints now working with MySQL database using integer IDs instead of ObjectId strings. Database connection pool functioning correctly. Migration from MongoDB to MySQL is fully operational."
   
   - task: "Initialize 30 butterflies in database"
     implemented: true
-    working: "NA"
+    working: true
     file: "server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
@@ -134,14 +137,17 @@ backend:
       - working: "NA"
         agent: "main"
         comment: "Endpoint converted to use MySQL instead of MongoDB. Uses INSERT SQL statements instead of insert_many. Needs retesting after migration."
+      - working: true
+        agent: "testing"
+        comment: "✅ MYSQL MIGRATION VERIFIED: POST /api/init-butterflies working correctly with MySQL. Database already initialized with 30 butterflies. Duplicate initialization properly handled with appropriate message response."
   
   - task: "Get all butterflies endpoint"
     implemented: true
-    working: "NA"
+    working: true
     file: "server.py"
     stuck_count: 0
     priority: "medium"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
@@ -152,14 +158,17 @@ backend:
       - working: "NA"
         agent: "main"
         comment: "Migrated to MySQL. Now uses SELECT query instead of MongoDB find(). IDs are now integers instead of ObjectId strings. Needs retesting."
+      - working: true
+        agent: "testing"
+        comment: "✅ MYSQL MIGRATION VERIFIED: GET /api/butterflies returns exactly 30 butterflies with integer IDs. All butterfly objects have correct structure (id, commonName, latinName, imageUrl, difficulty). All IDs are unique. MySQL SELECT query working perfectly."
   
   - task: "Get random quiz question endpoint"
     implemented: true
-    working: "NA"
+    working: true
     file: "server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
@@ -170,14 +179,17 @@ backend:
       - working: "NA"
         agent: "main"
         comment: "Migrated to MySQL. Uses WHERE difficulty = ? SQL query. Needs retesting for difficulty filtering and randomization."
+      - working: true
+        agent: "testing"
+        comment: "✅ MYSQL MIGRATION VERIFIED: GET /api/quiz/question working perfectly with MySQL. Randomization confirmed (5 different butterflies in 5 calls). Difficulty filtering tested for levels 1, 2, and 3 - all working correctly. All butterflies in each difficulty level have correct difficulty values. Quiz structure with correctAnswer and 5 options validated."
   
   - task: "Admin - Get all butterflies"
     implemented: true
-    working: "NA"
+    working: true
     file: "server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
@@ -188,14 +200,17 @@ backend:
       - working: "NA"
         agent: "main"
         comment: "Migrated to MySQL. Uses SELECT query. IDs now integers. Needs retesting."
+      - working: true
+        agent: "testing"
+        comment: "✅ MYSQL MIGRATION VERIFIED: GET /api/admin/butterflies returns all 30 butterflies with integer IDs and complete structure including difficulty field. MySQL SELECT query working correctly for admin interface."
   
   - task: "Admin - Create butterfly"
     implemented: true
-    working: "NA"
+    working: true
     file: "server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
@@ -206,14 +221,17 @@ backend:
       - working: "NA"
         agent: "main"
         comment: "Migrated to MySQL. Uses INSERT query and cursor.lastrowid. Needs retesting."
+      - working: true
+        agent: "testing"
+        comment: "✅ MYSQL MIGRATION VERIFIED: POST /api/admin/butterfly successfully creates new butterfly with ID 31. MySQL INSERT with cursor.lastrowid working correctly. All field data validation passed. Created butterfly returned with proper integer ID."
   
   - task: "Admin - Update butterfly"
     implemented: true
-    working: "NA"
+    working: true
     file: "server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
@@ -224,14 +242,17 @@ backend:
       - working: "NA"
         agent: "main"
         comment: "Migrated to MySQL. Uses UPDATE query. ID parameter now integer instead of ObjectId string. Needs retesting."
+      - working: true
+        agent: "testing"
+        comment: "✅ MYSQL MIGRATION VERIFIED: PUT /api/admin/butterfly/31 successfully updated butterfly with integer ID. MySQL UPDATE query working correctly. All field updates validated and persisted properly."
   
   - task: "Admin - Delete butterfly"
     implemented: true
-    working: "NA"
+    working: true
     file: "server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
@@ -242,6 +263,33 @@ backend:
       - working: "NA"
         agent: "main"
         comment: "Migrated to MySQL. Uses DELETE query. ID now integer. Needs retesting."
+      - working: true
+        agent: "testing"
+        comment: "✅ MYSQL MIGRATION VERIFIED: DELETE /api/admin/butterfly/31 successfully deleted butterfly with integer ID. MySQL DELETE query working correctly. Verified butterfly completely removed from database by checking admin butterfly list."
+
+  - task: "Save game scores"
+    implemented: true
+    working: true
+    file: "server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ MYSQL MIGRATION VERIFIED: POST /api/scores successfully saves game scores with integer IDs. Score data validation passed for all fields (username, score, total, difficulty, percentage, date). MySQL INSERT with auto-increment ID working correctly."
+
+  - task: "Get user scores"
+    implemented: true
+    working: true
+    file: "server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ MYSQL MIGRATION VERIFIED: GET /api/scores/{username} successfully retrieves user score data with proper structure (personalBests, recentGames, totalGames). Personal bests calculation working correctly for easy/medium/hard difficulties. Recent games list and total games count validated."
 
 frontend:
   - task: "Home screen with HM logo and Start button"
