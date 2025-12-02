@@ -500,6 +500,200 @@ class BackendTester:
             self.test_results["overall"]["critical_issues"].append(f"admin delete butterfly error: {str(e)}")
             print(f"❌ Admin delete butterfly error: {e}")
             return False
+
+    def test_quiz_question_difficulty(self):
+        """Test GET /api/quiz/question with different difficulty levels"""
+        print("\n🧪 Testing GET /api/quiz/question with difficulty levels...")
+        
+        difficulties = [1, 2, 3]
+        difficulty_names = {1: "Easy", 2: "Medium", 3: "Hard"}
+        
+        for difficulty in difficulties:
+            try:
+                response = requests.get(f"{self.base_url}/quiz/question?difficulty={difficulty}", timeout=10)
+                
+                if response.status_code != 200:
+                    self.test_results["quiz_question_difficulty"]["details"] = f"HTTP {response.status_code} for difficulty {difficulty}: {response.text}"
+                    self.test_results["overall"]["critical_issues"].append(f"quiz question difficulty {difficulty} endpoint failed")
+                    print(f"❌ Quiz question difficulty {difficulty} failed: {response.status_code}")
+                    continue
+                
+                question = response.json()
+                
+                # Verify response structure
+                if "correctAnswer" not in question or "options" not in question:
+                    self.test_results["quiz_question_difficulty"]["details"] = f"Missing correctAnswer or options for difficulty {difficulty}"
+                    self.test_results["overall"]["critical_issues"].append(f"Quiz question difficulty {difficulty} missing required fields")
+                    print(f"❌ Missing correctAnswer or options for difficulty {difficulty}")
+                    continue
+                
+                # Verify all butterflies have the correct difficulty
+                correct_answer = question["correctAnswer"]
+                options = question["options"]
+                
+                if correct_answer.get("difficulty") != difficulty:
+                    self.test_results["quiz_question_difficulty"]["details"] = f"Correct answer has wrong difficulty: {correct_answer.get('difficulty')} != {difficulty}"
+                    self.test_results["overall"]["critical_issues"].append(f"Quiz question difficulty {difficulty} - correct answer has wrong difficulty")
+                    print(f"❌ Correct answer has wrong difficulty for level {difficulty}")
+                    continue
+                
+                wrong_difficulty_options = [opt for opt in options if opt.get("difficulty") != difficulty]
+                if wrong_difficulty_options:
+                    self.test_results["quiz_question_difficulty"]["details"] = f"Options with wrong difficulty for level {difficulty}"
+                    self.test_results["overall"]["critical_issues"].append(f"Quiz question difficulty {difficulty} - options have wrong difficulty")
+                    print(f"❌ {len(wrong_difficulty_options)} options have wrong difficulty for level {difficulty}")
+                    continue
+                
+                print(f"✅ Quiz question difficulty {difficulty} ({difficulty_names[difficulty]}): {correct_answer['commonName']} with 5 options")
+                
+            except Exception as e:
+                self.test_results["quiz_question_difficulty"]["details"] = f"Exception for difficulty {difficulty}: {str(e)}"
+                self.test_results["overall"]["critical_issues"].append(f"quiz question difficulty {difficulty} error: {str(e)}")
+                print(f"❌ Quiz question difficulty {difficulty} error: {e}")
+                return False
+        
+        self.test_results["quiz_question_difficulty"]["passed"] = True
+        self.test_results["quiz_question_difficulty"]["details"] = "Successfully tested quiz questions for all difficulty levels"
+        return True
+
+    def test_save_score(self):
+        """Test POST /api/scores endpoint"""
+        print("\n🧪 Testing POST /api/scores...")
+        
+        # Test score data
+        test_score = {
+            "username": "TestPlayer123",
+            "score": 8,
+            "total": 10,
+            "difficulty": 2,
+            "percentage": 80,
+            "date": "2024-12-02T04:57:00.000Z"
+        }
+        
+        try:
+            response = requests.post(
+                f"{self.base_url}/scores",
+                json=test_score,
+                headers={"Content-Type": "application/json"},
+                timeout=10
+            )
+            
+            if response.status_code != 200:
+                self.test_results["save_score"]["details"] = f"HTTP {response.status_code}: {response.text}"
+                self.test_results["overall"]["critical_issues"].append("save score endpoint failed")
+                print(f"❌ Save score failed: {response.status_code}")
+                return False
+            
+            saved_score = response.json()
+            
+            # Validate the saved score has all expected fields
+            required_fields = ['id', 'username', 'score', 'total', 'difficulty', 'percentage', 'date']
+            missing_fields = [field for field in required_fields if field not in saved_score]
+            
+            if missing_fields:
+                self.test_results["save_score"]["details"] = f"Missing fields in response: {missing_fields}"
+                self.test_results["overall"]["critical_issues"].append(f"Save score response missing fields: {missing_fields}")
+                print(f"❌ Missing fields in response: {missing_fields}")
+                return False
+            
+            # Validate the data matches what we sent (except id and date which are generated)
+            for field in ['username', 'score', 'total', 'difficulty', 'percentage']:
+                if saved_score[field] != test_score[field]:
+                    self.test_results["save_score"]["details"] = f"Data mismatch in {field}"
+                    self.test_results["overall"]["critical_issues"].append(f"Save score data mismatch in {field}")
+                    print(f"❌ Data mismatch: {field} = {saved_score[field]}, expected {test_score[field]}")
+                    return False
+            
+            # Check that ID is an integer (MySQL auto-increment)
+            if not isinstance(saved_score["id"], int):
+                self.test_results["save_score"]["details"] = f"ID is not integer: {type(saved_score['id'])}"
+                self.test_results["overall"]["critical_issues"].append("Save score ID is not integer")
+                print(f"❌ ID is not integer: {type(saved_score['id'])}")
+                return False
+            
+            print(f"✅ Score saved successfully with ID: {saved_score['id']}")
+            
+            self.test_results["save_score"]["passed"] = True
+            self.test_results["save_score"]["details"] = f"Successfully saved score for {test_score['username']}"
+            return True
+            
+        except Exception as e:
+            self.test_results["save_score"]["details"] = f"Exception: {str(e)}"
+            self.test_results["overall"]["critical_issues"].append(f"save score error: {str(e)}")
+            print(f"❌ Save score error: {e}")
+            return False
+
+    def test_get_user_scores(self):
+        """Test GET /api/scores/{username} endpoint"""
+        print("\n🧪 Testing GET /api/scores/{username}...")
+        
+        username = "TestPlayer123"  # Use the same username from save_score test
+        
+        try:
+            response = requests.get(f"{self.base_url}/scores/{username}", timeout=10)
+            
+            if response.status_code != 200:
+                self.test_results["get_user_scores"]["details"] = f"HTTP {response.status_code}: {response.text}"
+                self.test_results["overall"]["critical_issues"].append("get user scores endpoint failed")
+                print(f"❌ Get user scores failed: {response.status_code}")
+                return False
+            
+            user_scores = response.json()
+            
+            # Validate the response structure
+            required_fields = ['personalBests', 'recentGames', 'totalGames']
+            missing_fields = [field for field in required_fields if field not in user_scores]
+            
+            if missing_fields:
+                self.test_results["get_user_scores"]["details"] = f"Missing fields in response: {missing_fields}"
+                self.test_results["overall"]["critical_issues"].append(f"Get user scores response missing fields: {missing_fields}")
+                print(f"❌ Missing fields in response: {missing_fields}")
+                return False
+            
+            # Validate personalBests structure
+            personal_bests = user_scores["personalBests"]
+            if not isinstance(personal_bests, dict):
+                self.test_results["get_user_scores"]["details"] = "personalBests is not a dict"
+                self.test_results["overall"]["critical_issues"].append("Get user scores personalBests invalid format")
+                print("❌ personalBests is not a dict")
+                return False
+            
+            required_pb_fields = ['easy', 'medium', 'hard']
+            missing_pb_fields = [field for field in required_pb_fields if field not in personal_bests]
+            if missing_pb_fields:
+                self.test_results["get_user_scores"]["details"] = f"Missing personalBests fields: {missing_pb_fields}"
+                self.test_results["overall"]["critical_issues"].append(f"Get user scores personalBests missing fields: {missing_pb_fields}")
+                print(f"❌ Missing personalBests fields: {missing_pb_fields}")
+                return False
+            
+            # Validate recentGames is a list
+            recent_games = user_scores["recentGames"]
+            if not isinstance(recent_games, list):
+                self.test_results["get_user_scores"]["details"] = "recentGames is not a list"
+                self.test_results["overall"]["critical_issues"].append("Get user scores recentGames invalid format")
+                print("❌ recentGames is not a list")
+                return False
+            
+            # Validate totalGames is an integer
+            total_games = user_scores["totalGames"]
+            if not isinstance(total_games, int):
+                self.test_results["get_user_scores"]["details"] = "totalGames is not an integer"
+                self.test_results["overall"]["critical_issues"].append("Get user scores totalGames invalid format")
+                print("❌ totalGames is not an integer")
+                return False
+            
+            print(f"✅ User scores retrieved: {total_games} total games, {len(recent_games)} recent games")
+            print(f"   Personal bests: Easy={personal_bests['easy']}, Medium={personal_bests['medium']}, Hard={personal_bests['hard']}")
+            
+            self.test_results["get_user_scores"]["passed"] = True
+            self.test_results["get_user_scores"]["details"] = f"Successfully retrieved scores for {username}: {total_games} total games"
+            return True
+            
+        except Exception as e:
+            self.test_results["get_user_scores"]["details"] = f"Exception: {str(e)}"
+            self.test_results["overall"]["critical_issues"].append(f"get user scores error: {str(e)}")
+            print(f"❌ Get user scores error: {e}")
+            return False
     
     def run_all_tests(self):
         """Run all backend tests"""
