@@ -708,15 +708,18 @@ class BackendTester:
         # Clear database for clean testing
         self.clear_database()
         
-        # Run tests in order - original endpoints first, then admin endpoints
+        # Run tests in order - original endpoints first, then admin endpoints, then score endpoints
         tests = [
             ("Initialize Butterflies", self.test_init_butterflies),
             ("Get All Butterflies", self.test_get_butterflies),
             ("Quiz Question", self.test_quiz_question),
+            ("Quiz Question Difficulty", self.test_quiz_question_difficulty),
             ("Admin Get Butterflies", self.test_admin_get_butterflies),
             ("Admin Create Butterfly", self.test_admin_create_butterfly),
             ("Admin Update Butterfly", self.test_admin_update_butterfly),
-            ("Admin Delete Butterfly", self.test_admin_delete_butterfly)
+            ("Admin Delete Butterfly", self.test_admin_delete_butterfly),
+            ("Save Score", self.test_save_score),
+            ("Get User Scores", self.test_get_user_scores)
         ]
         
         passed_tests = 0
