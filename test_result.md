@@ -105,13 +105,25 @@
 user_problem_statement: "Butterfly identification mobile game app (Phase 1) with 30 pre-populated butterflies, light green theme, HM logo, game flow with 10 rounds, score tracking, and final results screen"
 
 backend:
+  - task: "MongoDB to MySQL Migration"
+    implemented: true
+    working: "NA"
+    file: "server.py"
+    stuck_count: 0
+    priority: "critical"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Migrated entire backend from MongoDB to MySQL. Installed MySQL/MariaDB server, created testdata database with butterflies and scores tables. Migrated 30 butterflies and 4 scores. Replaced motor with aiomysql, rewrote all database operations to use SQL instead of MongoDB queries. Updated .env with configurable MySQL credentials. Backend started successfully with MySQL connection pool."
+  
   - task: "Initialize 30 butterflies in database"
     implemented: true
-    working: true
+    working: "NA"
     file: "server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
       - working: "NA"
         agent: "main"
@@ -119,6 +131,9 @@ backend:
       - working: true
         agent: "testing"
         comment: "✅ TESTED: POST /api/init-butterflies successfully initializes exactly 30 butterflies. Handles duplicate initialization correctly. Database contains 30 unique butterfly records with proper structure."
+      - working: "NA"
+        agent: "main"
+        comment: "Endpoint converted to use MySQL instead of MongoDB. Uses INSERT SQL statements instead of insert_many. Needs retesting after migration."
   
   - task: "Get all butterflies endpoint"
     implemented: true
