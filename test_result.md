@@ -137,11 +137,11 @@ backend:
   
   - task: "Get all butterflies endpoint"
     implemented: true
-    working: true
+    working: "NA"
     file: "server.py"
     stuck_count: 0
     priority: "medium"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
       - working: "NA"
         agent: "main"
@@ -149,14 +149,17 @@ backend:
       - working: true
         agent: "testing"
         comment: "✅ TESTED: GET /api/butterflies returns exactly 30 butterflies with correct structure (id, commonName, latinName, imageUrl). All IDs are unique. Fixed id field serialization issue during testing."
+      - working: "NA"
+        agent: "main"
+        comment: "Migrated to MySQL. Now uses SELECT query instead of MongoDB find(). IDs are now integers instead of ObjectId strings. Needs retesting."
   
   - task: "Get random quiz question endpoint"
     implemented: true
-    working: true
+    working: "NA"
     file: "server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
       - working: "NA"
         agent: "main"
@@ -164,14 +167,17 @@ backend:
       - working: true
         agent: "testing"
         comment: "✅ TESTED: GET /api/quiz/question returns proper structure with correctAnswer and 5 options. Randomization working correctly (5 different butterflies in 5 calls). Correct answer is always included in options. All butterfly objects have required fields."
+      - working: "NA"
+        agent: "main"
+        comment: "Migrated to MySQL. Uses WHERE difficulty = ? SQL query. Needs retesting for difficulty filtering and randomization."
   
   - task: "Admin - Get all butterflies"
     implemented: true
-    working: true
+    working: "NA"
     file: "server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
       - working: "NA"
         agent: "main"
@@ -179,14 +185,17 @@ backend:
       - working: true
         agent: "testing"
         comment: "✅ TESTED: GET /api/admin/butterflies successfully retrieves all 30 butterflies with correct structure (id, commonName, latinName, imageUrl, difficulty). Admin endpoint working correctly."
+      - working: "NA"
+        agent: "main"
+        comment: "Migrated to MySQL. Uses SELECT query. IDs now integers. Needs retesting."
   
   - task: "Admin - Create butterfly"
     implemented: true
-    working: true
+    working: "NA"
     file: "server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
       - working: "NA"
         agent: "main"
@@ -194,14 +203,17 @@ backend:
       - working: true
         agent: "testing"
         comment: "✅ TESTED: POST /api/admin/butterfly successfully creates new butterfly with test data (Test Butterfly, Testus butterflii). Returns created butterfly with proper ID and validates all field data matches input."
+      - working: "NA"
+        agent: "main"
+        comment: "Migrated to MySQL. Uses INSERT query and cursor.lastrowid. Needs retesting."
   
   - task: "Admin - Update butterfly"
     implemented: true
-    working: true
+    working: "NA"
     file: "server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
       - working: "NA"
         agent: "main"
@@ -209,14 +221,17 @@ backend:
       - working: true
         agent: "testing"
         comment: "✅ TESTED: PUT /api/admin/butterfly/{id} successfully updates existing butterfly. Tested with created butterfly ID, updated all fields (commonName, latinName, imageUrl, difficulty), and verified changes are persisted correctly."
+      - working: "NA"
+        agent: "main"
+        comment: "Migrated to MySQL. Uses UPDATE query. ID parameter now integer instead of ObjectId string. Needs retesting."
   
   - task: "Admin - Delete butterfly"
     implemented: true
-    working: true
+    working: "NA"
     file: "server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
       - working: "NA"
         agent: "main"
@@ -224,6 +239,9 @@ backend:
       - working: true
         agent: "testing"
         comment: "✅ TESTED: DELETE /api/admin/butterfly/{id} successfully deletes butterfly and returns success message. Verified butterfly is completely removed from database by checking admin butterfly list."
+      - working: "NA"
+        agent: "main"
+        comment: "Migrated to MySQL. Uses DELETE query. ID now integer. Needs retesting."
 
 frontend:
   - task: "Home screen with HM logo and Start button"
